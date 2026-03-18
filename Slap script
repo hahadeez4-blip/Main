@@ -7,7 +7,7 @@ local player = Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
 
 local connection
-local BURST = 100 -- very high spam
+local BURST = 9.5 -- very high spam
 
 local function setupTool(tool)
 	if connection then
