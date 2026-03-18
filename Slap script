@@ -1,0 +1,38 @@
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+
+local player = Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+
+local connection
+local BURST = 100 -- very high spam
+
+local function setupTool(tool)
+	if connection then
+		connection:Disconnect()
+		connection = nil
+	end
+	
+	connection = RunService.Heartbeat:Connect(function()
+		if tool and tool.Parent == character then
+			for i = 1, BURST do
+				tool:Activate()
+			end
+		end
+	end)
+end
+
+-- detect tools
+local function onCharacter(char)
+	character = char
+	
+	char.ChildAdded:Connect(function(child)
+		if child:IsA("Tool") then
+			setupTool(child)
+		end
+	end)
+end
+
+-- initial + respawn
+onCharacter(character)
+player.CharacterAdded:Connect(onCharacter)
